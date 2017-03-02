@@ -71,7 +71,7 @@ end
 def ask_for_result_details(selected_appointment)
   print "Provide description of the medical checkup (i.e. cholesterol amount, tooth decay...): "
   description = gets.chomp
-  visit = "#{selected_appointment.speciality} on #{selected_appointment.month} of #{selected_appointment.year}"
+  visit = "#{selected_appointment.speciality} on #{selected_appointment.day}-#{selected_appointment.month}-#{selected_appointment.year}"
   Result.new({
     visit: visit,
     outcome: description

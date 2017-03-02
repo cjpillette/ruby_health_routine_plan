@@ -1,8 +1,9 @@
-speciality,month,year
-dentist,jan,2017
-blood work,aug,2018
-skin check,mar,2018
-optometrist,dec,2017
-blood work,may,2016
-opto,apr,2018
-Skin check,Sep,2017
+speciality,day,month,year
+dentist,03,jan,2017
+blood work,25,aug,2018
+skin check,21,mar,2018
+optometrist,19,dec,2017
+blood work,05,may,2016
+opto,11,apr,2018
+skin check,09,09,17
+dentist,04,03,17

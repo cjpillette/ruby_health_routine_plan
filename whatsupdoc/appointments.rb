@@ -37,6 +37,7 @@ end
 
 def display_appointment(appointment)
   puts "Speciality: #{appointment.speciality}"
+  puts "Day: #{appointment.day}"
   puts "Month: #{appointment.month}"
   puts "Year: #{appointment.year}"
 end
@@ -44,13 +45,16 @@ end
 def ask_for_appointment_details
   print "Appointment type (i.e skin check, dentist, blood work): "
   speciality = gets.chomp
-  print "Month (i.e feb, mar, apr, may): "
+  print "Day: (i.e 24): "
+  day = gets.chomp
+  print "Month: (i.e 07): "
   month = gets.chomp
-  print "Year (i.e 2015, 2016, 2017, 2018): "
+  print "Year: (i.e 15 or 16 or 17): "
   year = gets.chomp
   # Create new appointment
   Appointment.new({
     speciality: speciality,
+    day: day,
     month: month,
     year: year
   })
@@ -60,7 +64,7 @@ def ask_for_appointment_from(appointments)
   # Loop over each person
   appointments.each_with_index do |appointment, index|
     # Display first and last name, with an index
-    puts "#{index + 1}. #{appointment.speciality} - #{appointment.month} - #{appointment.year}"
+    puts "#{index + 1}. #{appointment.speciality} on #{appointment.day} - #{appointment.month} - #{appointment.year}"
   end
 
   index = 0
@@ -84,10 +88,10 @@ def display_all_appointments
   appointments = read_appointment_from_csv
   # Loop over each row in the CSV
 
-  table = Terminal::Table.new :title => "Appointments", :headings => ['Speciality', 'Month', 'Year']  do |t|
+  table = Terminal::Table.new :title => "Appointments", :headings => ['Speciality', 'Day', 'Month', 'Year']  do |t|
   appointments.each do |appointment|
     # Display first and last name
-    t << [appointment.speciality, appointment.month, appointment.year]
+    t << [appointment.speciality, appointment.day, appointment.month, appointment.year]
     end
   end
   puts table
@@ -99,7 +103,6 @@ def add_appointment
   puts '-' * 15
 
   appointment = ask_for_appointment_details
-
   # Read all people
   appointments = read_appointment_from_csv
   # Add person to end of array
@@ -115,8 +118,8 @@ def update_appointment
   index = ask_for_appointment_from(appointments)
   puts ''
 
-  existing_appointment = appointments[index]
-  display_appointment(existing_appointment)
+  selected_appointment = appointments[index]
+  display_appointment(selected_appointment)
   puts ''
 
   puts 'Enter new details:'
