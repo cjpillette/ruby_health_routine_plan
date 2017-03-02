@@ -1,9 +1,11 @@
-speciality,day,month,year
-dentist,03,jan,2017
-blood work,25,aug,2018
-skin check,21,mar,2018
-optometrist,19,dec,2017
-blood work,05,may,2016
-opto,11,apr,2018
-skin check,09,09,17
-dentist,04,03,17
+speciality,date
+blood work,2016-04-14
+skin check,2017-10-12
+elbow doc,2017-12-25
+blood work,2018-11-06
+opto,2017-03-21
+opto,2017-03-22
+dentist,2018-08-27
+arm doc,2015-12-30
+dentist,2016-04-05
+blood work,2017-04-04

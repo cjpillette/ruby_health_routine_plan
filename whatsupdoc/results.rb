@@ -9,20 +9,18 @@ class Results
 
   def menu(appointments)
     loop do
-      puts "1. Display all records"
-      puts "2. Add medical record"
-      puts "3. Update med results"
-      puts "4. Delete results"
-      puts "x. Exit"
+      puts "1. Display all records".colorize(:green)
+      puts "2. Add medical record".colorize(:green)
+      puts "3. Update med results".colorize(:green)
+      puts "4. Delete results".colorize(:green)
+      puts "x. Exit".colorize(:green)
       puts ''
-
       print '> '
       choice = gets.chomp
       case choice
       when '1'
         display_all_results
       when '2'
-        # add_result
         add_result(appointments)
       when '3'
         update_result
@@ -35,7 +33,6 @@ class Results
       end
 
       sleep 1
-
       puts ''
     end
 end
@@ -44,7 +41,7 @@ def read_result_from_csv
   results = []
   # Loop over each row in the CSV
   CSV.foreach(FILE_NAME_RES, headers: true) do |row|
-    # Convert from CSV::Row to Person instance
+    # Convert from CSV::Row to Appointment instance
     result = Result.from_csv_row(row)
     # Add object to array
     results << result
@@ -67,11 +64,10 @@ def append_result_to_csv(result)
   end
 end
 
-
 def ask_for_result_details(selected_appointment)
   print "Provide description of the medical checkup (i.e. cholesterol amount, tooth decay...): "
   description = gets.chomp
-  visit = "#{selected_appointment.speciality} on #{selected_appointment.day}-#{selected_appointment.month}-#{selected_appointment.year}"
+  visit = "#{selected_appointment.speciality} on #{selected_appointment.date}"
   Result.new({
     visit: visit,
     outcome: description
@@ -94,7 +90,6 @@ def ask_for_result_from(results)
     # Display first and last name, with an index
     puts "#{index + 1}. #{result.visit} : #{result.outcome}"
   end
-
   index = 0
   loop do
     # Ask for index from user
@@ -102,20 +97,17 @@ def ask_for_result_from(results)
     choice = gets.chomp
     index = choice.to_i
     # Only allow valid
-    break if index > 1 && index <= results.length
+    break if index >= 1 && index <= results.length
     puts "Invalid index #{choice}. Try again"
   end
-
   # Convert from 1-base to 0-base
   index - 1
 end
 
 def display_all_results
   puts 'All med results'
-
   results = read_result_from_csv
   # Loop over each row in the CSV
-
   table = Terminal::Table.new :title => "Results", :headings => ['Visit', 'Outcome']  do |t|
   results.each do |result|
     # Display first and last name
@@ -123,16 +115,17 @@ def display_all_results
     end
   end
   puts table
-
 end
 
 def add_result(appointments)
 
   visit = appointments.read_appointment_from_csv
-  index = appointments.ask_for_appointment_from(visit)
+  appointment_attended = appointments.filter_visit_attended(visit)
+  sorted_visit = appointments.chrono_sorted_appointment(appointment_attended)
+  index = appointments.ask_for_appointment_from(sorted_visit)
   puts ''
 
-  selected_appointment = visit[index]
+  selected_appointment = sorted_visit[index]
   appointments.display_appointment(selected_appointment)
 
   result = ask_for_result_details(selected_appointment)
@@ -165,16 +158,13 @@ end
 
 def delete_result
   puts "Delete result"
-
   results = read_result_from_csv
   index = ask_for_result_from(results)
-
   result = results[index]
   puts '-' * 15
   puts "Are you sure you want to delete this result?"
   print "y/n: "
   choice = gets.chomp.downcase
-
   if choice == "y"
     results.delete_at(index)
     write_results_to_csv(results)

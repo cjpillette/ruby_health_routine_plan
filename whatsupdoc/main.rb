@@ -4,16 +4,17 @@ require_relative 'result'
 require_relative 'results'
 
 
+
 appointments = Appointments.new
 results = Results.new
 
 
   loop do
     puts "1. Display all appointment"
-    puts "2. Add appoinment"
+    puts "2. Add appointment"
     puts "3. Update appointment"
     puts "4. Delete appointment"
-    puts "5. Manage med results"
+    puts "5. Manage med results".colorize(:green)
     puts "x. Exit"
     puts ''
     print '> '
